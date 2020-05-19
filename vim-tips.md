@@ -1,10 +1,16 @@
 # Vim básico (y no tanto)
 
+> En algunas instalaciones de Linux se instala el paquete `vim-tiny`, que contiene una versión sin ayuda y con alguna limitación de funciones. Puedes comprobar la versión instalada invocando el comando de ayuda: 
+> Pulsa `ESC` para asegurarte que estás en modo *normal* y escribe `:help` (seguido de Enter).
+> En la ayuda se recomienda instalar el paquete completo de `vim` o alguno versión alternativa completa.
+
 ## Modos
 
 Cuando lanzas Vim, entras en modo *normal*; si quieres empezar a introducir texto, debes pasar al modo de *inserción* (con el que puedes editar texto).
 
 Para cambiar a modo de *inserción*, pulsa la letra `i`; para salir del modo de *inserción* y volver al modo *normal*, pulsa la tecla *escape* (ESC).
+
+Si quieres entrar en el modo para insertar texto en una nueva línea, usa `o` en vez de `i`.
 
 ### Editar texto
 
@@ -60,7 +66,7 @@ Si en algún momento te cansas de tener números de línea -o ya no los necesita
 De nuevo la idea detrás del funcionamiento de Vim es interrumpirte lo mínimo posible y que sigas a lo tuyo.
 Si usas alguna configuración -como los números de línea- de forma habitual, debes incluirla en el fichero de configuración de Vim (generalmente `~/.vimrc`).
 
-### Pestañas en Vim
+## Pestañas en Vim
 
 Aunque se trata de una aplicación "de pantalla negra", Vim proporciona pestañas como cualquier editor moderno.
 Si quieres modificar el fichero `~./.vimrc` antes de que se te olvide pero no quieres dejar a medias el documento en el que estás trabajando, abre una nueva pestaña y modifica el fichero.
@@ -76,3 +82,147 @@ Si quieres dejar el fichero de configuración abierto en una pestaña -por si ne
 
 Si tienes muchas pestañas abiertas puedes cambiar a una específica mediante, por ejemplo, `3gt` (repite tres veces, ves a la siguiente pestaña (desde la primera), o lo que es lo mismo, ves a la tercera pestaña).
 
+Para volver a la pestaña anterior, usa `gT` o usa `:tabp`.
+
+Los comandos para navegar entre pestañas (*tabs*) son todos de este estilo: `:tabedit`,  `:tabfirst`, `:tablast` o `:tabclose`... Si sólo quieres conservar la pestaña actual y cerrar el resto, `:tabonly`.
+
+Recuerda que para descartar los cambios en otras pestañas que no tengas guardados debes añadir `!`.
+
+## Múltiples ventanas
+
+Otra de esas cosas que -por ahora- sólo he usado en editores de texto en entornos gráficos: dividir la pantalla; en Vim se puede conseguir mediante: `:split` (para dividir la ventana horizontalmente) o `vsplit` para una división vertial.
+
+Para cambiar el *foco* de la pantalla se usa `ctrl+w` seguido de la tecla de cursor (o las `hjkl` para indicar a qué ventana quieres cambiar el foco). Cuidado con `ctrl+w` ya que en muchas aplicaciones este es el atajo de teclado para cerrar la ventana...
+
+Puedes cerrar una ventana adicional mediante `:q`, pero me ha gustado el comando para cerrar *todas* las otras ventanas `:only`.
+
+Recuerda que puedes copiar y pegar entre distintas pestañas y ventanas, lo que es especialmente útil (esta era una de esas cosas que echaba de menos hasta ahora, usando `screen` o `tmux` en equipos remotos.
+
+## Bookmarks
+
+Aunque puedes desplazarte con facilidad dentro del texto de un fichero en Vim, puedes poner un *bookmark* en alguna línea particular de interés en el fichero.
+
+Para ello, usa `:m a`, donde puedes usar en vez de `a` cualquier letra minúscula (de la `a` a la `z`) como *marcador*.
+
+Puedes consultar todos los marcadores que tienes definidos mediante `:marks`.
+
+Para saltar a una marca concreta, usa (desde el modo normal) ``a` (o la letra que hayas usado como marca).
+
+En un teclado configurado en castellan este atajo es un poco fastidioso, ya que ``` se combina con algunos caracteres para producir letras con acento abierto, por lo que a veces, para que se muestre el caracter debes pulsar ```` seguido de espacio, por ejemplo, para que se muestre y después la letra usada como marca :(
+
+### Marcas "del sistema"
+
+Si compruebas las marcas que tienes definidas, verás que **siempre** aparecen dos, como mínimo: una indica la última posición en la que se ha producido un cambio en el texto y otra que representa la posición en la que se abandonó el fichero actual...
+
+En mi caso las *marcas* que aparecen son diferentes a las que se indican en [el wiki Using marks](https://vim.fandom.com/wiki/Using_marks).
+
+## Trucos/Recetas
+
+Una de las cosas más habituales en los artículos sobre Vim en internet es mostrar una lista de combinaciones que permiten hacer una cosa superespecífica de la manera más óptima posible (y que probablemente sólo tenga sentido hacerla si usas Vim). En cualqueir caso, esta guía no estaría completa sin una lista de esas cosas, así que aquí empieza una -inacabale- lista de *trucos* para Vim.
+
+> Disclaimer: sólo apuntaré los trucos que me hayan funcionado y que me sirvan en alguna situación, hay demasiadas cosas que hacer en la vida para tener que pasar el tiempo acumulando cosas que nunca usaré.
+
+### Ir al paréntesis de cierre (sirve para otros caracteres que van en parejas)
+
+El "comando" `%` permite ir al caracter de cierre -o apertura- de un bloque limitado por paréntesis, llaves, paréntesis cuadrados (corchetes).
+Esto es ideal cuando estás programando, pero también sirve si estás escribiendo texto. Si estás en el paréntesis de cierre, al pulsar `%` en modo *normal* saltas al paréntesis de apertura. Y viceversa.
+Funciona del mismo modo con `{}`, `[]`, `()` (aunque no parece funcionar con  `<` y `>`, comillas, etc.
+
+### Hacer que la tecla `<----` (backspace) borre en Vim
+
+Es una de esas cosas que te vuelven loco hasta que un día descubres cómo solucionarlo. Por algún motivo desconocido, el comportamiento por defecto de la table de borrar (*backspace*) en vim es **no hacer nada**.
+
+Para devolverle el comportamiento esperado, es decir, **borrar**, debes añadir la linea al fichero `~/.vimrc`:
+
+```ini
+set backspace=indent,eol,start
+```
+
+Referencia: [Backspace key not working in Vim/vi](https://stackoverflow.com/questions/11560201/backspace-key-not-working-in-vim-vi)
+
+Puedes usar este "comando" en combinación con `d` o `y` y así copiar todo el bloque de texto.
+
+### Selección visual
+
+Cuando tienes un mouse, mantienes pulsado el botón principal y lo arrastras y seleccionas lo que haya debajo. Si estás en un entorno "de pantalla negra", simplifica mucho las cosas tener algo de *feedback* visual cuando seleccionas una palabra, una línea, etc...
+
+En Vim, para conseguirlo, debes usar el comando `v` (por *visual*).
+
+1. Pulsa `ESC` para volver al modo normal
+1. Pulsa `v` para resaltar la selección
+1. Muévete -con los cursores, con comando como `w` o `b`, etc- para seleccionar
+1. Haz algo con ello! Por ejemplo, `vyw` y después `p` para copiar y pegar una palabra.
+
+### Buscar
+
+Una de las cosas más habituales cuando estás editando un fichero es buscar algo concreto (que seguramente borrarás o corregirás a continuación).
+
+En Vim usas `/` (en modo normal) para iniciar una búsqueda.
+
+Si quieres buscar `Vim` en este texto:
+
+1. Pulsa `ESC` para volver a modo normal
+1. Escribe `/Vim` y pulsa enter.
+
+El cursor encontrará la primera ocurrencia de la cadena que has buscado. Puede buscar la siguiente ocurrencia pulsando  `/` (y Enter) de nuevo. Aunque es mucho más rápido simplemente pulsar `n` para encontrar la siguiente ocurrencia de la búsqueda en el texto (o `N`, para encontrar la anterior).
+
+El tema de la búsqueda tiene más *chicha*, por lo que más adelante volveré con más contenido para esta sección.
+
+### Moverse en el fichero
+
+Parece que el origen de que en Vim las teclas para desplazarse por el texto sean `h j k l` en vez de los cursos "modernos" es porque el teclado de los terminales originales tenía las flechas de los cursores en estas letras ([Key Placement](https://superuser.com/a/599152), incluso hay una foto).
+
+Tratándose de Vim, no podía faltar quien lo justifica indicando que las teclas `hjkl` está, literalmente, bajo tus dedos y es mucho más rápido que tener que desplazar la mano hasta las teclas de cursor... Hay quien incluso dice haber calculado cuánto tiempo ahorra al día usando Vim (calculando el tiempo *perdido* en desplazamientos *inútiles* y le salen como tres minutos al día de ahorro... En fin).
+
+En cualquier caso, puedes usar las teclas de cursor en las versiones modernas de Vim (yo es una de las cosas que no puedo evitar; de hecho, si me fuerzo a usar `hjkl` pierdo más tiempo *pensando* en hacia dónde me quiero mover, etc que no desplazando la mano hacia el cursos y pulsando las teclas sin mirar...)
+
+Sin embargo, sí que es importante que aprendas otros *atajos* para agilizar cómo te desplazas por un texto.
+
+#### Desplazamientos cortos
+
+Empezamos con los desplazamientos "cortos": con `w` (*word*) avanzas al principio de la siguiente palabra (donde "palabra" es un conjunto de letras separadas del resto por un espacio o algún caracter especial como signos de puntuación o comillas). Para volver "hacia atrás", usas `b` (de *backwards*).
+
+Si quieres desplazarte al final de la palabra en la que te encuentras, pulsa `e` (*end*).
+
+#### Desplazamientos un poco más largos
+
+Pulsa `0` para desplazarte al inicio de la línea en la que se encuentra el cursor.
+
+Para desplazarte al final de la línea, pulsa `$`.
+
+De nuevo, puedes usar las teclas *Home* y *End* del teclado y, en general, funcionan como las aplicaciones de escritorio... Debo confesar que a diferencia de `hjkl` sí que uso con cierta frecuencia estos dos *atajos*... Aunque están más cerca en el teclado, el hecho de tenes que combinarlo con *Shift* (para obtener `$`) hace que lo use menos de lo que debería, especialmente en modo *inserción*, ya que tengo que añadirle la tecla `ESC` para pasar a modo normal primero..
+
+#### Desplazamientos medios
+
+En modo normal, puedes desplazarte al principio de la siguiente frase mediante ' )'.
+
+Si quieres avanza hasta el principio del siguiente párrafo, usa `}`.
+
+No conocía estos comandos, así que no los he utilizado nunca.
+
+
+#### Desplazamientos largos
+
+Para desplazarte al final del fichero, usa `shift+g` (*g* mayúscula).
+
+Si quieres volver al principio del fichero, usa `gg`.
+
+Para ir a cualquier sitio, usa la combinación `#G`, donde *#* es el número de línea al que quieres ir.
+
+
+## Ejecutar comandos de sistema sin salir de Vim
+
+Puedes ejecutar un comando del sistema operativo (Linux) desde Vim desde el modo *normal* precediendo el ccomando de `:!`. Por ejemplo:
+
+```bash
+LICENSE  vim-tips.md
+
+Press ENTER or type command to continue
+```
+
+---
+
+Referencia:
+- [Why I love Vim: It’s the lesser-known features that make it so amazing](https://www.freecodecamp.org/news/learn-linux-vim-basic-features-19134461ab85/) 
+- [How not to be afraid of Vim anymore](https://www.freecodecamp.org/news/how-not-to-be-afraid-of-vim-anymore-ec0b7264b0ae/)
+- [7 Vim Tips That Changed My Life (With Demo)](https://www.freecodecamp.org/news/7-vim-tips-that-changed-my-life/) Los *tips* que se indican están muy orientados a la programación; cosas relacionadas con la indentación de bloques, al principio de una línea, etc... Quizás más adelante.
