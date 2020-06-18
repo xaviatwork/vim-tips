@@ -220,6 +220,67 @@ LICENSE  vim-tips.md
 Press ENTER or type command to continue
 ```
 
+> Las siguientes notas provienen de un vídeo de YouTube del canal ThoughtBot
+
+
+## Finding files
+
+set path+=**
+
+La gracia de esto es que al añadir `**` se realiza búsqueda recursiva (en los subdirectorios), por lo que permite encontrar cualquier fichero por debajo del fichero activo.
+
+Podemos comprobar cual es la *carpeta activa* en Vim mediante `set path?`, lo que muestra:
+
+    path=.,/usr/include,,,**
+
+Así podemos usar `:find ${nombrefichero}` para encontrar cualquier fichero que tengamos en cualquier subcarpeta (en nuestro proyecto).
+
+Esto además permite usar *tab* para completar el nombre del fichero.
+
+Si no sabemos el nombre exacto del fichero, podemos usar `\*` al principio o al final del nombre del fichero.
+
+Si activamos `set wildmenu`, cuando se encuentra más de una coincidencia, aparece un menú que nos muestra las diferentes opciones y podemos desplazarnos por él hasta seleccionar el ficheroque buscamos.
+
+Si tenemos múltiples ficheros abiertos, podemos usar `:ls` para mostrar la lista de ficheros abiertos.
+
+Autocomplete
+
+Para autocompletar, sin ningún tipo de configuración adicional, puedes usar `Ctrl+n` (en modo de inserción) para mostrar una lista de coincidencias existentes en ese mismo fichero.
+
+Todos los comandos de este estilo usan el prefijo `Ctrl+x`; por ejemplo, `ctrl+x,ctrl+n` muestra autocompletado sólo en este fichero, `ctrl+x,ctrl+f` reliza autocompletado de nombres de ficheros...
+
+Podemos consultar lo que hace cualquier comando mediante `:help ^n`, por ejemplo, nos muestra qué hace este comando en modo "normal". Si queremos consultar que hace en modo de inserción, usamos `:help i_^n` y en modo comando `:help c_^n`.
+
+## Buscar y reemplazar
+
+Para buscar una cadena podemos usar, en modo comando, `:/${cadena-a-buscar}` y pulsar enter. Pulsando `n` se salta a la siguiente coincidencia (y con `N` se vuelve a la coincidencia *previa*)
+
+Si queremos reemplazar, usamos (en  comando) `:s/patron/nuevacadena`. Esto reemplaza la *primera ocurrencia que encuentra* por *nuevacadena*.
+
+Si queremos reemplazar TODAS las ocurrencias, usamos `%s/patron/nuevacadena` (no solicita confirmación).
+
+## Insertar contenido de un fichero en el fichero actual
+
+Si tenemos un fichero `ejemplo.yaml` y queremos insertarlo en el fichero actual, nos colocamos en la línea a partir de la cual queremos insertar el fichero y pasamos a modo comando, `:r /path/al/fichero`.
+
+Otros comandos útiles (para investigar e ir practicando, obtenidos desde [Additional Operations](http://www.linfo.org/vi/additional.html):
+
+```
+a	appends after current cursor position
+A	appends at end of current line
+c	starts a change option
+C	starts a change option from current position to end of current line
+i	inserts to the left of the cursor position
+I	inserts at start of line
+o	cursor moves to new, blank line below its current position
+O	cursor moves to new, blank line above its current position
+R	replaces characters one at a time
+3G	Goes to 3rd line in the file
+G	Goes to the last line (no destination line specified)
+cw	Deletes word and enters insert mode
+```
+
+
 ---
 
 Referencia:
